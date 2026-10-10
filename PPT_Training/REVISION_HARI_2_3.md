@@ -8,11 +8,11 @@ scope buku pendamping.
 
 - Clean boundaries: View, controller, repository, remote/local data source.
 - Constructor injection, test seam, DTO/domain mapping, dan explicit state.
-- Contract-first API dengan Swagger/OpenAPI sebagai sumber kebenaran.
-- Topologi hosted Express dalam Docker serta mock Python sebagai fallback.
+- REST API client Flutter dengan model bertipe dan failure mapping.
+- Backend hosted diposisikan sebagai prasyarat; mock Python menjadi fallback.
 - Environment melalui `API_BASE_URL`, typed failure, cache policy, session,
   idempotency, observability, dan fault-injection matrix.
-- Tiga lab dengan Definition of Done serta checklist handoff backend–Flutter.
+- Tiga lab dengan Definition of Done serta checklist integrasi Flutter.
 
 ## Perubahan Hari 3
 

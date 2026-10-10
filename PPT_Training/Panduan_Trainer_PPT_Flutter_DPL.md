@@ -7,7 +7,7 @@ Paket presentasi untuk PT. Dok Pantai Lamongan. Fokus pada pengembangan aplikasi
 | Presentasi | Slide | Hasil utama |
 |---|---:|---|
 | Hari_1_Dart_Flutter_UI_Form.pptx | 44 | Model Dart, daftar/detail, form valid, navigation dan state UI |
-| Hari_2_Architecture_API_State_Storage.pptx | 39 | Clean boundaries, OpenAPI, hosted API, state, cache dan failure engineering |
+| Hari_2_Architecture_API_State_Storage.pptx | 39 | Clean boundaries, API client, model, state, cache dan failure engineering |
 | Hari_3_Testing_Performance_Release_Android.pptx | 39 | Native boundary, test strategy, DevTools, signing, release dan handover |
 
 Total 122 slide. Format 16:9; teks, kode, tabel dan diagram teknis dapat diedit. Deck Hari 2–3 memakai tema navy–cyan–gold yang konsisten dengan cover buku. Setiap slide memiliki catatan presenter berisi tujuan, alokasi waktu, arahan penjelasan/demonstrasi, pertanyaan diskusi dan rujukan. Kunci evaluasi berada pada catatan slide evaluasi.
@@ -25,7 +25,7 @@ Peserta diasumsikan memahami dasar pemrograman dan pengalaman pengembangan Andro
 | Hari | Urutan sesi |
 |---|---|
 | 1 | Dart → widget/layout → state/form/navigation → debugging → review |
-| 2 | Clean boundaries → OpenAPI/login/GET/POST → state/cache → failure engineering → review |
+| 2 | Clean boundaries → API client/login/GET/POST → state/cache → failure engineering → review |
 | 3 | Native boundary → test portfolio → profiling → overview iOS 20 menit → release/review |
 
 Jika peserta tertinggal, dahulukan kriteria wajib PRD. Asset dekoratif, pagination lengkap, custom MethodChannel, upload foto permanen dan sinkronisasi offline merupakan pengembangan lanjutan. Foto dalam latihan adalah preview lokal; cache bersifat read-only dengan timestamp.
@@ -33,7 +33,7 @@ Jika peserta tertinggal, dahulukan kriteria wajib PRD. Asset dekoratif, paginati
 ## Persiapan demonstrasi
 
 1. Catat versi Flutter/Dart/JDK/Android SDK dan dependency yang benar-benar dipakai; simpan pubspec.lock untuk konsistensi.
-2. Verifikasi hosted Express API, Swagger UI/OpenAPI, image tag Docker, dan endpoint health dari device kelas. Jalankan mock Python sebagai fallback dengan kontrak yang sama.
+2. Sebelum kelas, trainer/PIC memverifikasi hosted API dan endpoint health dari device kelas. Peserta langsung berfokus pada integrasi Flutter. Jalankan mock Python hanya sebagai fallback dengan kontrak yang sama.
 3. Siapkan skenario login salah, 401, 409, 422, 500, timeout, cache rusak dan logout; gunakan request ID tanpa merekam token.
 4. Gunakan physical Android untuk profiling dan pemeriksaan kamera. Siapkan fallback demonstrasi jika hardware peserta berbeda.
 5. Siapkan keystore latihan dan staging HTTPS sebelum sesi rilis. Isi placeholder host/path/password di mesin latihan; gunakan identifier yang bebas dari aplikasi operasional.

@@ -52,9 +52,10 @@ error/retry, theme, komponen reusable, dan widget test.
 
 ## Hari 2 — API, state dan storage
 
-Jalur utama kelas memakai API Express yang dipublikasikan melalui Docker dan
-didokumentasikan lewat Swagger/OpenAPI. Ganti placeholder di bawah dengan URL
-HTTPS dari PIC backend:
+Jalur utama kelas memakai API HTTPS yang sudah disiapkan PIC. Implementasi dan
+deployment backend bukan materi kelas; peserta berfokus pada API client, model,
+repository, state, session, cache, dan error handling di Flutter. Ganti
+placeholder di bawah dengan URL training:
 
 ```sh
 cd flutter_projects/hari_2_dpl_inspection_api
@@ -63,8 +64,8 @@ fvm flutter run -d "iPhone 16" \
   --dart-define=API_BASE_URL=https://HOST_API_TRAINING
 ```
 
-Sebelum wiring UI, verifikasi `/health`, `/docs` atau `/openapi.json`, login,
-GET, POST, 401, dan 422. Checklist handoff berada di
+Trainer memverifikasi `/health`, login, GET, POST, 401, dan 422 sebelum sesi.
+Checklist prasyarat backend berada di
 `API_HANDOFF_EXPRESS_SWAGGER_DOCKER.md`.
 
 Jika hosting atau jaringan kelas bermasalah, gunakan mock lokal yang mempunyai

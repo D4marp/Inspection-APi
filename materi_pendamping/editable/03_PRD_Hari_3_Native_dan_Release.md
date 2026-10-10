@@ -54,7 +54,7 @@ Unit test membuktikan parsing JSON serta aturan catatan untuk needs_action. Widg
 **Performance:** ukur dalam mode profile pada device yang sama. Catat skenario scroll/rebuild, gejala awal, perbaikan, dan hasil setelahnya. Target kelas adalah menemukan serta menjelaskan satu perbaikan; tidak menetapkan angka FPS universal tanpa kondisi pengukuran.
 
 ## Prasyarat
-Flutter 3.44.8, Xcode 26.5, iPhone 16 Simulator iOS 18.0, dan hosted Express API/staging HTTPS tersedia dengan kontrak Swagger/OpenAPI yang sudah diverifikasi. Image/tag Docker dan base URL dicatat. Mock Python tetap menjadi fallback debug dengan kontrak sama. Signing store bersifat opsional. Jika staging belum tersedia, catat smoke test API release sebagai blocker; build simulator dan fungsi non-network tetap dapat diperiksa.
+Flutter 3.44.8, Xcode 26.5, iPhone 16 Simulator iOS 18.0, serta API training/staging HTTPS tersedia dan sudah diverifikasi trainer/PIC. Peserta menerima base URL dan kontrak response; implementasi/deployment backend bukan bagian sesi. Mock Python tetap menjadi fallback debug dengan kontrak sama. Signing store bersifat opsional. Jika staging belum tersedia, catat smoke test API release sebagai blocker; build simulator dan fungsi non-network tetap dapat diperiksa.
 
 <!-- PAGE -->
 ## Acceptance criteria hari 3

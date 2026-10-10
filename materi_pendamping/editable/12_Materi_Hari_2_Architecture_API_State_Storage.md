@@ -45,9 +45,11 @@ lib/
 
 <!-- PAGE -->
 ## Menyiapkan API latihan
-Jalur utama kelas memakai API Express yang dipublikasikan melalui Docker dan mempunyai Swagger UI/OpenAPI. Trainer lebih dahulu memeriksa health, version/image tag, login, GET, POST, 401 dan 422 dari Swagger. Flutter kemudian memakai URL HTTPS melalui API_BASE_URL; URL tidak ditulis pada widget.
+API training disiapkan trainer/PIC sebelum kelas. Implementasi Express, dokumentasi Swagger/OpenAPI, dan deployment Docker diperlakukan sebagai prasyarat, bukan materi peserta. Waktu kelas difokuskan pada Flutter: konfigurasi base URL, model JSON, ApiClient, repository, controller, state UI, session, cache, serta failure handling.
 
-Folder praktik/mock_api tetap berisi server Python tanpa dependency tambahan sebagai fallback jika hosting atau jaringan kelas bermasalah. Kontrak endpoint, status dan schema fallback harus sama dengan backend hosted. Semua data dan token dummy. Jangan expose mock server ke internet.
+Trainer lebih dahulu memeriksa health, login, GET, POST, 401 dan 422. Peserta menerima URL HTTPS dan kontrak response, lalu Flutter memakai API_BASE_URL; URL tidak ditulis pada widget.
+
+Folder praktik/mock_api tetap berisi server Python tanpa dependency tambahan sebagai fallback jika hosting atau jaringan kelas bermasalah. Kontrak endpoint, status dan schema fallback harus sama dengan API utama. Semua data dan token dummy. Jangan expose mock server ke internet.
 
 ```text
 python mock_api.py --host 127.0.0.1 --port 8000

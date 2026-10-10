@@ -1,8 +1,8 @@
 # Handoff API Training — Express, Swagger/OpenAPI, dan Docker
 
-Dokumen ini menyelaraskan backend training yang disiapkan PIC dengan aplikasi
-Flutter Hari 2–3. Ini bukan modul backend baru; kontraknya tetap mengikuti PRD
-Hari 2 dan buku Flutter.
+Dokumen ini adalah checklist persiapan trainer/PIC sebelum kelas, bukan materi
+peserta. Kelas tetap dominan Flutter; Express, Swagger/OpenAPI, dan Docker hanya
+menjamin API training siap dipakai dan kontraknya mengikuti PRD Hari 2.
 
 ## Artefak yang disediakan backend
 

@@ -34,7 +34,7 @@ flutter run -d "iPhone 16"
 
 Full restart setelah pemasangan. Baca README versi paket terpasang dan periksa minimum SDK jika resolver/build menunjukkan ketidakcocokan. Hindari menambahkan location/file/notification bersamaan dalam kelas 3 hari: setiap fitur mempunyai konfigurasi dan skenario uji sendiri.
 
-**Checkpoint awal:** semua acceptance hari 2 tetap lulus sebelum fitur foto dipasang. Trainer memeriksa bahwa Swagger/OpenAPI sesuai dengan payload hosted Express API, UI/detail dan data model tetap bekerja, serta image/version Docker dan base URL training sudah dicatat. Mock Python hanya menjadi fallback kontrak yang sama.
+**Checkpoint awal:** semua acceptance hari 2 tetap lulus sebelum fitur foto dipasang. Trainer memeriksa bahwa API client Flutter, UI/detail, model, session, cache, dan failure state tetap bekerja terhadap base URL training. Implementasi/deployment backend berada di luar sesi; mock Python hanya menjadi fallback kontrak yang sama.
 
 <!-- PAGE -->
 ## Foto lintas platform dan lifecycle async

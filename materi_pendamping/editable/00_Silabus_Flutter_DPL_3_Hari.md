@@ -43,7 +43,7 @@ Program ini memadatkan silabus awal menjadi 3 hari efektif untuk tim developer y
 |---|---|---|
 | 08.30-10.00 | Architecture, clean boundaries, model, repository, async | Refactor prototipe dan verifikasi health API |
 | 10.00-10.15 | Istirahat | 15 menit |
-| 10.15-12.00 | Swagger/OpenAPI, login, token, GET/POST, error mapping | Validasi kontrak, ambil dan tambah inspeksi |
+| 10.15-12.00 | API client Flutter, login, token, GET/POST, error mapping | Mapping model, ambil dan tambah inspeksi |
 | 12.00-13.00 | Istirahat | 60 menit |
 | 13.00-14.30 | ChangeNotifier, storage, session, cache | Loading/success/empty/error, restart dan logout |
 | 14.30-14.45 | Istirahat | 15 menit |
@@ -114,7 +114,7 @@ Setiap PRD mempunyai acceptance criteria yang dapat diuji. Trainer mencatat **Lu
 | Android toolchain | Opsional untuk build lanjutan APK/AAB; tidak menjalankan emulator bersamaan | Trainer |
 | Google Play opsional | Akses akun, app record dan peran upload jika praktik distribusi | Pemilik akun DPL |
 | Signing Android | Keystore demo, alias dan password; bukan key produksi | Trainer dan PIC |
-| Backend | Hosted Express API + Swagger/OpenAPI + image Docker; mock paket sebagai fallback; firewall dan route diuji | Trainer dan PIC backend |
+| Backend | API training sudah siap sebelum kelas; implementasi/deployment di luar materi; mock paket sebagai fallback | Trainer dan PIC backend |
 | Data | Akun dan data dummy; tidak memakai data operasional sensitif | Trainer |
 | Paket | Versi stabil kompatibel dipilih; pubspec.lock disimpan | Trainer |
 | Jaringan | Package download, API, dan store dapat diakses | PIC IT |

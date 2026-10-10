@@ -6,7 +6,7 @@
 ## Tujuan
 Mengganti sumber data lokal checkpoint hari 1 dengan API latihan, menambahkan login demo, dan membuat state serta session dapat dikelola dengan jelas. UI tidak memanggil HTTP langsung. Peserta memisahkan model, API service, repository, controller ChangeNotifier, dan storage.
 
-**Input:** tag day-1 yang memenuhi PRD hari 1. **Output:** app terintegrasi API dengan token demo dan cache daftar terakhir. **Pengguna:** satu petugas simulasi. **Reviewer:** trainer dan PIC developer. Jalur utama memakai hosted Express API dalam Docker dengan kontrak Swagger/OpenAPI; mock Python dalam folder praktik menjadi fallback kelas dengan kontrak sama.
+**Input:** tag day-1 yang memenuhi PRD hari 1 serta API training yang sudah disiapkan trainer/PIC. **Output:** app terintegrasi API dengan token demo dan cache daftar terakhir. **Pengguna:** satu petugas simulasi. **Reviewer:** trainer dan PIC developer. Implementasi dan deployment backend bukan materi peserta; mock Python dalam folder praktik menjadi fallback kelas dengan kontrak sama.
 
 ## Kebutuhan fungsional
 | ID | Persyaratan inti | Perilaku |
@@ -31,7 +31,7 @@ Mengganti sumber data lokal checkpoint hari 1 dengan API latihan, menambahkan lo
 
 <!-- PAGE -->
 ## Kontrak API latihan
-**Base URL:** parameter API_BASE_URL, tanpa slash terakhir. Jalur utama device/simulator memakai URL HTTPS hosted yang disediakan PIC. Fallback mock lokal: iPhone Simulator memakai `http://localhost:8000`; Android Emulator memakai `http://10.0.2.2:8000`; physical device memakai alamat LAN komputer server. HTTP hanya untuk debug lab; release memakai staging HTTPS. Swagger UI dan dokumen OpenAPI diverifikasi sebelum Flutter dihubungkan.
+**Base URL:** parameter API_BASE_URL, tanpa slash terakhir. Jalur utama device/simulator memakai URL HTTPS yang disediakan PIC. Fallback mock lokal: iPhone Simulator memakai `http://localhost:8000`; Android Emulator memakai `http://10.0.2.2:8000`; physical device memakai alamat LAN komputer server. HTTP hanya untuk debug lab; release memakai staging HTTPS. Trainer memverifikasi kontrak sebelum sesi sehingga peserta langsung mengerjakan Flutter.
 
 | Endpoint | Request | Response inti |
 |---|---|---|
@@ -40,9 +40,8 @@ Mengganti sumber data lokal checkpoint hari 1 dengan API latihan, menambahkan lo
 | POST /inspections | Bearer token; assetCode, location, condition, note | 201 object Inspection |
 | GET /health | Tanpa token | 200 status ok |
 
-Backend hosted juga menyediakan Swagger UI dan dokumen OpenAPI, misalnya pada
-`/docs` dan `/openapi.json`, serta versi/image tag pada health response agar
-masalah environment dapat dilacak.
+Dokumentasi kontrak API dapat disediakan melalui Swagger/OpenAPI untuk referensi
+trainer dan peserta, tetapi pembahasan tooling backend bukan bagian praktik.
 
 **Demo login:** username `trainer`, password `training123`. Seluruh kredensial dan token ini dummy, bukan contoh autentikasi production. Mock server menyimpan data dalam memori; restart server mengembalikan seed data.
 
@@ -92,4 +91,4 @@ Controller memiliki items, isLoading, isSubmitting, errorMessage, isCached dan f
 Semua persyaratan inti dan acceptance criteria lulus. Serahkan checkpoint day-2, bukti GET/POST, screenshot error/cache, dan catatan skema JSON. Trainer memeriksa pemisahan layer serta logout. Build release dan foto belum menjadi syarat hari 2.
 
 ## Dependensi dan pengendalian risiko
-Hosted Express API menjadi jalur utama bila kontrak Swagger/OpenAPI sudah lolos dry run. Image/tag Docker, URL, credential dummy, fault scenario dan request ID dicatat saat handoff. Mock Python tetap tersedia sebagai fallback. Backend production, refresh token, role permissions, database offline, serta multi-user cache tidak menjadi scope implementasi kelas.
+API training menjadi jalur utama setelah trainer/PIC menyelesaikan dry run endpoint, credential dummy, dan fault scenario. Peserta cukup menerima base URL serta kontrak response. Mock Python tetap tersedia sebagai fallback. Implementasi/deployment backend, refresh token, role permissions, database offline, serta multi-user cache tidak menjadi scope kelas.

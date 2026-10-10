@@ -2,10 +2,9 @@
 """Build the professional Day 2 and Day 3 Flutter training decks.
 
 The generated presentations intentionally stay aligned with the written modules:
-Day 2 covers architecture/API/state/storage and Day 3 covers native integration,
-testing/performance/release.  Express, Swagger/OpenAPI, and Docker are presented
-as the delivery environment for the same API contract, not as a separate backend
-course.
+Day 2 covers Flutter architecture/API/state/storage and Day 3 covers native
+integration/testing/performance/release. Backend implementation and deployment
+are prerequisites supplied by the trainer, not classroom topics.
 """
 
 from __future__ import annotations
@@ -570,12 +569,12 @@ def build_day2(background: Path):
         prs,
         2,
         "Flutter Data, API\n& Clean Architecture",
-        "Integrasi contract-first dengan Express, Swagger/OpenAPI, Docker, state, session, dan cache.",
+        "Clean architecture, REST API client, state, session, cache, dan failure handling di Flutter.",
         ["CLEAN CODE", "REST API", "STATE", "CACHE"],
         background,
         total,
     )
-    add_notes(s, "Pembukaan", 3, "Menyepakati target teknis Hari 2.", "Tunjukkan bahwa backend hosted menggantikan server kelas, tetapi kontrak endpoint tetap sama.", "Apa risiko terbesar ketika UI langsung bergantung pada detail backend?", "Modul Hari 2 dan PRD Hari 2.")
+    add_notes(s, "Pembukaan", 3, "Menyepakati target teknis Hari 2.", "Tegaskan bahwa backend sudah disiapkan. Waktu kelas dipakai untuk implementasi Flutter dan pembuktian perilakunya.", "Apa risiko terbesar ketika UI langsung bergantung pada detail HTTP?", "Modul Hari 2 dan PRD Hari 2.")
     n += 1
 
     s = add_outcome_slide(
@@ -586,7 +585,7 @@ def build_day2(background: Path):
         "Hasil belajar yang dapat dibuktikan",
         [
             ("Arsitektur teruji", ["UI tidak mengetahui HTTP", "Dependency dapat diganti dengan fake"], "A", CYAN),
-            ("Kontrak API jelas", ["Swagger menjadi sumber kebenaran", "Status dan schema tervalidasi"], "C", BLUE),
+            ("API client bertipe", ["Model sesuai kontrak", "Status dan schema tervalidasi"], "C", BLUE),
             ("State dapat diprediksi", ["Loading, data, empty, error, cached", "Submit ganda dicegah"], "S", GOLD),
             ("Operasional aman", ["Token tidak masuk log", "Environment dan cache punya kebijakan"], "O", GREEN),
         ],
@@ -601,7 +600,7 @@ def build_day2(background: Path):
         total,
         [
             ("08.30", "Architecture & clean boundaries", "Refactor tanpa mengubah perilaku UI"),
-            ("10.15", "OpenAPI, auth, GET & POST", "Kontrak lolos di Swagger dan Flutter"),
+            ("10.15", "API client, auth, GET & POST", "Data API tampil dan create berhasil"),
             ("13.00", "State, session & cache", "Restart/offline/logout dapat dijelaskan"),
             ("14.45", "Failure engineering", "401/422/500/timeout memberi UX tepat"),
             ("16.00", "Review & checkpoint", "Test, bukti request, tag day-2"),
@@ -627,7 +626,7 @@ def build_day2(background: Path):
     add_box(s, Inches(0.75), Inches(4.22), Inches(11.85), Inches(1.45), WHITE, LINE)
     add_rich_text(s, [("Dependency mengarah ke dalam. ", INK, True), ("Data mengalir dua arah sebagai request dan result, tetapi UI tidak mengimpor package HTTP atau storage.", MUTED, False)], Inches(1.06), Inches(4.65), Inches(11.25), Inches(0.56), size=16)
     add_pill(s, "CLEAN CODE TEST", Inches(4.95), Inches(6.02), Inches(3.1), fill=PALE_BLUE, color=BLUE)
-    add_text(s, "Jika transport berubah dari mock ke Docker-hosted Express, View tidak ikut berubah.", Inches(2.05), Inches(6.48), Inches(9.2), Inches(0.28), size=14, color=BLUE, bold=True, align=PP_ALIGN.CENTER)
+    add_text(s, "Jika host atau implementasi API berubah, View tidak ikut berubah.", Inches(2.05), Inches(6.48), Inches(9.2), Inches(0.28), size=14, color=BLUE, bold=True, align=PP_ALIGN.CENTER)
     add_notes(s, "09.02–09.15", 13, "Menjelaskan boundary dan arah dependency.", "Trace aksi refresh dari View hingga API lalu kembali sebagai state.", "Apa import yang tidak boleh muncul pada file screen?", "Modul Hari 2: aliran tanggung jawab.")
     n += 1
 
@@ -667,18 +666,18 @@ def build_day2(background: Path):
     add_notes(s, "09.55–10.00", 5, "Memperkenalkan mapping sesuai kompleksitas.", "Tunjukkan Inspection.fromJson yang sudah ada dan jelaskan kapan DTO terpisah berguna.", "Apa dampak cast error jika dibiarkan lolos ke UI?", "Modul Hari 2: model JSON.")
     n += 1
 
-    s = add_section_slide(prs, 2, n, total, "02", "Contract-first API", "Swagger/OpenAPI menyamakan ekspektasi Flutter dan Express sebelum wiring UI.", ["Membaca contract", "Memilih environment", "Memetakan failure"])
-    add_notes(s, "10.15–10.17", 2, "Membuka sesi API.", "Pastikan Swagger UI dan /health dapat diakses sebelum coding Flutter.", "Apa yang harus disepakati sebelum endpoint diimplementasikan?", "PRD Hari 2: kontrak API.")
+    s = add_section_slide(prs, 2, n, total, "02", "REST API di Flutter", "Flutter membaca kontrak, memetakan JSON, dan mengubah response menjadi state yang dapat diuji.", ["Membuat API client", "Memilih environment", "Memetakan failure"])
+    add_notes(s, "10.15–10.17", 2, "Membuka sesi API Flutter.", "Endpoint dan backend sudah siap. Mulai dari response contract lalu implementasikan ApiClient.", "Bagaimana mencegah detail HTTP bocor ke widget?", "PRD Hari 2: kontrak API.")
     n += 1
 
-    s = base_slide(prs, "API CONTRACT", "Topologi training: hosted + fallback", n, total, 2)
+    s = base_slide(prs, "API CLIENT", "Aliran integrasi API dari sisi Flutter", n, total, 2)
     # topology boxes
     nodes = [
-        ("Flutter", "dart-define\nAPI_BASE_URL", Inches(0.65), CYAN),
-        ("HTTPS", "Bearer + JSON\nX-Request-Id", Inches(3.20), BLUE),
-        ("Docker", "Express API\nvalidated input", Inches(5.75), GOLD),
-        ("Data", "DB / memory\ntraining data", Inches(8.30), GREEN),
-        ("Swagger", "/docs\n/openapi.json", Inches(10.85), ORANGE),
+        ("View", "render state\nuser intent", Inches(0.65), CYAN),
+        ("Controller", "orchestrate\nnotify UI", Inches(3.20), BLUE),
+        ("Repository", "remote/cache\npolicy", Inches(5.75), GOLD),
+        ("ApiClient", "Bearer + JSON\ntimeout", Inches(8.30), GREEN),
+        ("HTTPS API", "contract ready\ntraining data", Inches(10.85), ORANGE),
     ]
     for title, body, x, color in nodes:
         add_box(s, x, Inches(1.72), Inches(1.85), Inches(1.48), WHITE, color)
@@ -686,17 +685,17 @@ def build_day2(background: Path):
         add_text(s, body, x + Inches(0.08), Inches(2.38), Inches(1.69), Inches(0.48), size=11, color=MUTED, align=PP_ALIGN.CENTER)
         if x < Inches(10.5):
             add_connector(s, x + Inches(1.86), Inches(2.46), x + Inches(2.45), Inches(2.46), color=CYAN, width=2)
-    add_card(s, Inches(0.66), Inches(4.10), Inches(5.78), Inches(2.26), "Jalur utama kelas", ["Hosted Express melalui HTTPS", "Swagger UI untuk eksplorasi", "Image Docker berversi"], icon="1", accent=CYAN, body_size=14)
-    add_card(s, Inches(6.78), Inches(4.10), Inches(5.78), Inches(2.26), "Fallback operasional", ["Mock Python lokal tetap tersedia", "Schema dan status harus sama", "Dipakai jika jaringan/hosting bermasalah"], icon="2", accent=GOLD, body_size=14)
-    add_notes(s, "10.17–10.30", 13, "Menjelaskan hubungan Flutter–backend–Swagger–Docker.", "Tekankan bahwa Docker adalah packaging/deployment; aplikasi Flutter hanya peduli kontrak dan base URL.", "Bagian mana yang berubah ketika backend dipindah host?", "Modul Hari 2; handoff API hosted.")
+    add_card(s, Inches(0.66), Inches(4.10), Inches(5.78), Inches(2.26), "Fokus peserta Flutter", ["Mapping JSON ke model", "State dan recovery UI", "Lifecycle serta testability"], icon="1", accent=CYAN, body_size=14)
+    add_card(s, Inches(6.78), Inches(4.10), Inches(5.78), Inches(2.26), "Sudah disiapkan trainer", ["Base URL dan akun dummy", "Kontrak/status response", "Backend serta deployment"], icon="2", accent=GOLD, body_size=14)
+    add_notes(s, "10.17–10.30", 13, "Menjelaskan aliran integrasi Flutter.", "Trace aksi user sampai ApiClient dan kembali sebagai UI state. Backend/deployment cukup disebut sebagai prasyarat.", "Layer mana yang memutuskan cache fallback?", "Modul Hari 2: data flow.")
     n += 1
 
-    s = base_slide(prs, "API CONTRACT", "Swagger sebagai Definition of Contract", n, total, 2)
+    s = base_slide(prs, "API CLIENT", "Membaca kontrak sebagai Flutter developer", n, total, 2)
     add_card(s, Inches(0.62), Inches(1.30), Inches(3.78), Inches(4.95), "Request", ["Method + path", "Auth scheme", "Headers", "Query/path params", "Body schema + example"], icon="RQ", accent=CYAN, body_size=14)
     add_card(s, Inches(4.78), Inches(1.30), Inches(3.78), Inches(4.95), "Response", ["Success status", "Error status", "Schema per status", "Pagination metadata", "Timestamp + timezone"], icon="RS", accent=BLUE, body_size=14)
-    add_card(s, Inches(8.94), Inches(1.30), Inches(3.78), Inches(4.95), "Quality", ["operationId stabil", "Example dapat dieksekusi", "422 punya field errors", "401 konsisten", "OpenAPI versioned"], icon="QA", accent=GOLD, body_size=14)
+    add_card(s, Inches(8.94), Inches(1.30), Inches(3.78), Inches(4.95), "Flutter mapping", ["DTO/model bertipe", "Enum tervalidasi", "422 ke field errors", "401 ke session flow", "DateTime ke UTC"], icon="FM", accent=GOLD, body_size=14)
     add_text(s, "Rule: aplikasi tidak menebak nama field, status code, atau bentuk error.", Inches(1.45), Inches(6.55), Inches(10.45), Inches(0.30), size=15, color=BLUE, bold=True, align=PP_ALIGN.CENTER)
-    add_notes(s, "10.30–10.43", 13, "Mengajarkan cara membaca Swagger secara engineering.", "Buka login, list, create. Cocokkan example dengan model Dart dan validator.", "Apa yang harus terjadi bila Swagger dan respons nyata berbeda?", "OpenAPI contract backend training.")
+    add_notes(s, "10.30–10.43", 13, "Mengajarkan cara menerjemahkan kontrak ke Dart.", "Cocokkan login, list, dan create dengan model, enum, validator, serta failure mapper.", "Apa yang terjadi bila field wajib hilang?", "Kontrak API training dan model Dart.")
     n += 1
 
     s = base_slide(prs, "API CONTRACT", "Contract minimum untuk DPL Inspection", n, total, 2)
@@ -705,10 +704,10 @@ def build_day2(background: Path):
         ["GET /inspections", "page, per_page", "200 items + total", "401, 500"],
         ["POST /inspections", "assetCode, location, condition, note", "201 Inspection", "401, 409, 422"],
         ["GET /health", "—", "200 status + version", "503 dependency down"],
-        ["GET /openapi.json", "—", "200 OpenAPI", "—"],
     ], Inches(0.58), Inches(1.28), Inches(12.16), Inches(4.62), widths=[Inches(2.55), Inches(3.62), Inches(2.76), Inches(3.23)], font_size=12)
-    add_card(s, Inches(0.58), Inches(6.10), Inches(12.16), Inches(0.64), "Compatibility note", "Backend boleh berkembang; field wajib dan status yang dipakai app tidak berubah tanpa versioning/migration.", icon="v1", accent=CYAN, body_size=12)
-    add_notes(s, "10.43–10.53", 10, "Menyepakati kontrak endpoint.", "Jalankan satu request per endpoint dari Swagger UI sebelum Flutter.", "Mengapa /health dan versi image berguna saat troubleshooting?", "PRD Hari 2 dan mock_api.py.")
+    add_box(s, Inches(0.58), Inches(6.10), Inches(12.16), Inches(0.64), PALE_BLUE, CYAN)
+    add_rich_text(s, [("COMPATIBILITY  •  ", BLUE, True), ("Field wajib dan status yang dipakai app tidak berubah tanpa versioning atau migration.", INK, False)], Inches(0.90), Inches(6.29), Inches(11.52), Inches(0.25), size=12)
+    add_notes(s, "10.43–10.53", 10, "Memetakan endpoint ke method Flutter.", "Jalankan satu request contoh, lalu implementasikan method dan model yang sesuai.", "Status mana yang mengakhiri session?", "PRD Hari 2 dan mock_api.py.")
     n += 1
 
     s = base_slide(prs, "API CONTRACT", "Environment tanpa hard-coded URL", n, total, 2)
@@ -764,7 +763,7 @@ def build_day2(background: Path):
     add_card(s, Inches(0.62), Inches(1.25), Inches(7.42), Inches(5.42), "Langkah", ["Buka /docs dan catat server/version", "Login benar dan salah", "GET tanpa token → 401", "POST invalid → 422 + field error", "POST valid → 201 + server ID", "Simpan request/response tanpa secret"], icon="LAB", accent=CYAN, body_size=15)
     add_card(s, Inches(8.35), Inches(1.25), Inches(4.36), Inches(2.28), "Definition of Done", ["Schema cocok dengan model", "Status code cocok PRD", "Base URL tercatat"], icon="✓", accent=GREEN, body_size=12)
     add_card(s, Inches(8.35), Inches(3.79), Inches(4.36), Inches(2.88), "Fallback", ["Jika hosted API down, jalankan mock Python", "Gunakan kontrak identik", "Catat blocker hosting terpisah"], icon="B", accent=GOLD, body_size=13)
-    add_notes(s, "11.55–12.00", 5, "Memberi briefing praktik sebelum istirahat/kelanjutan.", "Peserta bekerja berpasangan. Reviewer memeriksa status dan schema.", "Bukti apa yang aman dibagikan?", "requests.http dan Swagger API training.")
+    add_notes(s, "11.55–12.00", 5, "Memberi briefing praktik sebelum istirahat/kelanjutan.", "Peserta bekerja berpasangan. Reviewer memeriksa ApiClient, mapping, status dan UI state.", "Bukti apa yang aman dibagikan?", "requests.http dan kontrak API training.")
     n += 1
 
     s = add_section_slide(prs, 2, n, total, "03", "State & data policy", "State eksplisit membuat UI deterministik; repository membuat keputusan sumber data.", ["Memodelkan state", "Mengatur cache", "Menjaga lifecycle async"])
@@ -862,9 +861,9 @@ def build_day2(background: Path):
     s = base_slide(prs, "FAILURE", "Observability tanpa membocorkan secret", n, total, 2)
     add_card(s, Inches(0.62), Inches(1.28), Inches(3.78), Inches(4.98), "Log", ["method + path", "status + duration", "request ID", "failure type", "environment/version"], icon="L", accent=CYAN, body_size=14)
     add_card(s, Inches(4.78), Inches(1.28), Inches(3.78), Inches(4.98), "Redact", ["Authorization", "password", "token", "PII/body sensitif", "keystore path/password"], icon="×", accent=RED, body_size=14)
-    add_card(s, Inches(8.94), Inches(1.28), Inches(3.78), Inches(4.98), "Correlate", ["X-Request-Id", "client → Express log", "Docker image version", "timestamp UTC", "user-safe error ID"], icon="ID", accent=GOLD, body_size=14)
+    add_card(s, Inches(8.94), Inches(1.28), Inches(3.78), Inches(4.98), "Correlate", ["X-Request-Id", "request → response", "app version", "timestamp UTC", "user-safe error ID"], icon="ID", accent=GOLD, body_size=14)
     add_text(s, "Debugging menjadi kolaborasi client–backend, bukan tebak-tebakan screenshot.", Inches(1.23), Inches(6.56), Inches(10.85), Inches(0.25), size=14, color=BLUE, bold=True, align=PP_ALIGN.CENTER)
-    add_notes(s, "15.02–15.15", 13, "Menetapkan logging yang aman dan berguna.", "Tunjukkan contoh request ID di Swagger/Express bila tersedia.", "Data apa yang tidak boleh masuk log?", "Security baseline materi Hari 2.")
+    add_notes(s, "15.02–15.15", 13, "Menetapkan logging Flutter yang aman dan berguna.", "Tunjukkan method, path, status, duration, dan request ID tanpa Authorization/body sensitif.", "Data apa yang tidak boleh masuk log?", "Security baseline materi Hari 2.")
     n += 1
 
     s = base_slide(prs, "CLEAN CODE", "Anti-pattern → refactor", n, total, 2)
@@ -883,7 +882,7 @@ def build_day2(background: Path):
     s = base_slide(prs, "CLEAN CODE", "Test portfolio untuk Hari 2", n, total, 2)
     add_card(s, Inches(0.62), Inches(1.30), Inches(3.76), Inches(4.84), "Unit", ["JSON parse", "validation", "failure mapping", "cache policy"], icon="U", accent=CYAN, body_size=14)
     add_card(s, Inches(4.78), Inches(1.30), Inches(3.76), Inches(4.84), "State", ["load success", "error + retry", "401 expire", "submit guard"], icon="S", accent=BLUE, body_size=14)
-    add_card(s, Inches(8.94), Inches(1.30), Inches(3.76), Inches(4.84), "Contract", ["Swagger example", "status/schema", "auth header", "hosted + mock parity"], icon="C", accent=GOLD, body_size=14)
+    add_card(s, Inches(8.94), Inches(1.30), Inches(3.76), Inches(4.84), "API client", ["JSON fixture", "status/schema", "auth header", "timeout/failure mapping"], icon="C", accent=GOLD, body_size=14)
     add_box(s, Inches(1.33), Inches(6.34), Inches(10.65), Inches(0.48), NAVY, None)
     add_text(s, "Test boundary yang bernilai—bukan mengejar jumlah test.", Inches(1.50), Inches(6.48), Inches(10.30), Inches(0.20), size=13, color=WHITE, bold=True, align=PP_ALIGN.CENTER)
     add_notes(s, "15.30–15.45", 15, "Menetapkan test sesuai risiko.", "Tuliskan satu test per kartu yang akan ditambahkan Hari 3.", "Test mana paling cepat mendeteksi contract drift?", "Modul Hari 2 dan Hari 3 testing.")
@@ -898,7 +897,7 @@ def build_day2(background: Path):
 
     s = base_slide(prs, "CHECKPOINT", "Definition of Done — day 2", n, total, 2)
     add_table(s, ["Area", "Wajib", "Bukti"], [
-        ["Contract", "login, GET, POST, 401, 422", "Swagger/REST capture"],
+        ["API client", "login, GET, POST, 401, 422", "test + REST capture"],
         ["Architecture", "UI → controller → repository → data", "source review"],
         ["State", "loading/data/empty/error/cached", "demo states"],
         ["Session", "secure token + logout clear", "restart/logout"],
@@ -909,12 +908,12 @@ def build_day2(background: Path):
     add_notes(s, "16.00–16.10", 10, "Menilai hasil dengan evidence.", "Gunakan status Lulus/Perlu perbaikan/Terhalang prasyarat.", "Area mana belum punya bukti?", "PRD Hari 2 AC1–AC11.")
     n += 1
 
-    s = base_slide(prs, "CHECKPOINT", "Handover backend ↔ Flutter", n, total, 2)
-    add_card(s, Inches(0.62), Inches(1.28), Inches(3.78), Inches(5.06), "Backend menyediakan", ["Base URL HTTPS", "Swagger/OpenAPI", "Demo credential", "Image/tag Docker", "Fault mode / test data", "CORS/routing bila relevan"], icon="BE", accent=GOLD, body_size=13)
-    add_card(s, Inches(4.78), Inches(1.28), Inches(3.78), Inches(5.06), "Flutter menyediakan", ["Client version", "Environment target", "Request ID/error ID", "Expected schema", "Repro steps", "No secret in evidence"], icon="FE", accent=CYAN, body_size=13)
-    add_card(s, Inches(8.94), Inches(1.28), Inches(3.78), Inches(5.06), "Disepakati", ["Contract version", "Breaking-change policy", "Ownership incident", "Training uptime window", "Fallback mock", "Data retention"], icon="↔", accent=GREEN, body_size=13)
-    add_text(s, "Satu halaman handoff mencegah jam debugging lintas tim.", Inches(2.10), Inches(6.58), Inches(9.10), Inches(0.25), size=14, color=BLUE, bold=True, align=PP_ALIGN.CENTER)
-    add_notes(s, "16.10–16.20", 10, "Menyepakati handoff API hosted.", "Isi placeholder URL/version bersama PIC backend sebelum kelas.", "Siapa pemilik contract drift?", "Dokumen handoff API training.")
+    s = base_slide(prs, "CHECKPOINT", "Flutter integration checklist", n, total, 2)
+    add_card(s, Inches(0.62), Inches(1.28), Inches(3.78), Inches(5.06), "Configuration", ["Base URL via dart-define", "HTTPS untuk release", "Timeout terpusat", "No hard-coded secret", "Debug cleartext terbatas", "Environment terlihat"], icon="CF", accent=GOLD, body_size=13)
+    add_card(s, Inches(4.78), Inches(1.28), Inches(3.78), Inches(5.06), "Implementation", ["Model/DTO bertipe", "ApiClient fokus transport", "Repository memilih source", "Controller memiliki state", "UI hanya render/intent", "Lifecycle ditutup"], icon="FL", accent=CYAN, body_size=13)
+    add_card(s, Inches(8.94), Inches(1.28), Inches(3.78), Inches(5.06), "Evidence", ["Test parser/state", "GET/POST berhasil", "401/422 dipetakan", "Offline/cache jelas", "Request ID tanpa token", "README dapat diikuti"], icon="✓", accent=GREEN, body_size=13)
+    add_text(s, "Review berpusat pada kualitas implementasi Flutter.", Inches(2.10), Inches(6.58), Inches(9.10), Inches(0.25), size=14, color=BLUE, bold=True, align=PP_ALIGN.CENTER)
+    add_notes(s, "16.10–16.20", 10, "Melakukan review integrasi Flutter.", "Gunakan checklist untuk source review dan demo. Detail deployment backend tidak dibahas.", "Boundary mana masih bocor?", "Modul dan PRD Hari 2.")
     n += 1
 
     s = base_slide(prs, "CHECKPOINT", "Evaluasi: jelaskan keputusan, bukan hafalan", n, total, 2)
@@ -922,7 +921,7 @@ def build_day2(background: Path):
         "Mengapa UI tidak boleh mengetahui HTTP status?",
         "Kapan GET boleh memakai cache?",
         "Mengapa POST timeout tidak otomatis aman untuk retry?",
-        "Apa bukti Swagger dan implementasi server konsisten?",
+        "Apa bukti model Dart sesuai response API?",
         "Dependency apa yang dibuat fake untuk state test?",
         "Apa yang harus dibersihkan saat 401/logout?",
     ]
@@ -944,8 +943,8 @@ def build_day2(background: Path):
     n += 1
 
     s = base_slide(prs, "REFERENCE", "Referensi dan scope pengayaan", n, total, 2)
-    add_card(s, Inches(0.62), Inches(1.22), Inches(5.86), Inches(5.52), "Rujukan inti", ["docs.flutter.dev/app-architecture", "docs.flutter.dev/cookbook/networking", "OpenAPI Specification", "flutter_secure_storage", "shared_preferences", "Modul + PRD Hari 2"], icon="R", accent=CYAN, body_size=13)
-    add_card(s, Inches(6.82), Inches(1.22), Inches(5.90), Inches(5.52), "Pengayaan setelah kelas", ["Generated API client dari OpenAPI", "Refresh-token rotation", "Offline write queue + conflict resolution", "Observability SDK", "Contract test di CI", "Pagination/cursor penuh"], icon="+", accent=GOLD, body_size=13)
+    add_card(s, Inches(0.62), Inches(1.22), Inches(5.86), Inches(5.52), "Rujukan inti", ["docs.flutter.dev/app-architecture", "docs.flutter.dev/cookbook/networking", "Dart JSON serialization", "flutter_secure_storage", "shared_preferences", "Modul + PRD Hari 2"], icon="R", accent=CYAN, body_size=13)
+    add_card(s, Inches(6.82), Inches(1.22), Inches(5.90), Inches(5.52), "Pengayaan setelah kelas", ["Code generation model/DTO", "Refresh-token rotation", "Offline write queue + conflict resolution", "Observability Flutter", "Integration test di CI", "Pagination/cursor penuh"], icon="+", accent=GOLD, body_size=13)
     add_notes(s, "Cadangan", 1, "Menutup dengan rujukan yang dapat dilanjutkan.", "Jangan mengerjakan pengayaan sebelum acceptance inti lulus.", "Pengayaan mana memberi nilai terbesar untuk roadmap tim?", "Dokumentasi resmi dan modul Hari 2.")
 
     assert len(prs.slides) == total, (len(prs.slides), total)
@@ -986,7 +985,7 @@ def build_day3(background: Path):
     n += 1
 
     s = base_slide(prs, "ORIENTASI", "Input dari day-2: quality starts upstream", n, total, 3)
-    add_card(s, Inches(0.62), Inches(1.26), Inches(3.78), Inches(4.98), "Contract", ["Swagger/schema stabil", "Failure mapping jelas", "Hosted + mock parity"], icon="C", accent=CYAN, body_size=14)
+    add_card(s, Inches(0.62), Inches(1.26), Inches(3.78), Inches(4.98), "API integration", ["Model/schema stabil", "Failure mapping jelas", "ApiClient dapat diuji"], icon="C", accent=CYAN, body_size=14)
     add_card(s, Inches(4.78), Inches(1.26), Inches(3.78), Inches(4.98), "Architecture", ["Boundary dapat di-fake", "Ownership lifecycle jelas", "State deterministik"], icon="A", accent=BLUE, body_size=14)
     add_card(s, Inches(8.94), Inches(1.26), Inches(3.78), Inches(4.98), "Security", ["No secret in repo/log", "Session clear", "Release memakai HTTPS"], icon="S", accent=GOLD, body_size=14)
     add_text(s, "Jika day-2 belum stabil, Hari 3 menjadi debugging marathon—bukan quality engineering.", Inches(1.0), Inches(6.53), Inches(11.3), Inches(0.28), size=14, color=RED, bold=True, align=PP_ALIGN.CENTER)
@@ -1075,11 +1074,11 @@ def build_day3(background: Path):
     add_notes(s, "10.43–10.58", 15, "Menguji controller tanpa HTTP/plugin.", "Tunjukkan dependency seam Hari 2 menjadi payoff Hari 3.", "Mengapa mock framework tidak wajib?", "Modul Hari 3: fake repository.")
     n += 1
 
-    s = base_slide(prs, "TESTING", "Contract test menjaga Flutter ↔ OpenAPI", n, total, 3)
-    add_flow(s, ["OpenAPI example", "HTTP response", "DTO decode", "Domain assertions"], Inches(0.72), Inches(1.40), Inches(11.90), descriptions=["expected schema", "hosted/mock", "strict boundary", "business meaning"])
+    s = base_slide(prs, "TESTING", "API client test menjaga mapping Flutter", n, total, 3)
+    add_flow(s, ["JSON fixture", "MockClient", "DTO decode", "Domain assertions"], Inches(0.72), Inches(1.40), Inches(11.90), descriptions=["known payload", "status/headers", "strict boundary", "business meaning"])
     add_card(s, Inches(0.72), Inches(3.62), Inches(5.75), Inches(2.63), "Minimum contract test", ["Status sesuai operation", "Required fields ada", "Enum/date valid", "Error body dapat dipetakan"], icon="C", accent=CYAN, body_size=13)
-    add_card(s, Inches(6.84), Inches(3.62), Inches(5.78), Inches(2.63), "CI evolution", ["Export openapi.json", "Validate examples/schema", "Run against Docker image", "Fail on breaking change"], icon="CI", accent=GOLD, body_size=13)
-    add_notes(s, "10.58–11.10", 12, "Mencegah contract drift.", "Bandingkan payload nyata dengan example Swagger. CI penuh adalah pengayaan.", "Apa breaking change yang paling mudah lolos manual testing?", "OpenAPI handoff dan module Hari 2/3.")
+    add_card(s, Inches(6.84), Inches(3.62), Inches(5.78), Inches(2.63), "Test cases", ["200 parse success", "401 typed failure", "422 field mapping", "invalid JSON rejected"], icon="T", accent=GOLD, body_size=13)
+    add_notes(s, "10.58–11.10", 12, "Mencegah regression pada ApiClient.", "Gunakan JSON fixture dan MockClient agar test cepat serta deterministik.", "Breaking response apa yang harus membuat test gagal?", "Modul Hari 2/3 dan package:http testing.")
     n += 1
 
     s = base_slide(prs, "TESTING", "Widget test: render state + user intent", n, total, 3)
@@ -1244,7 +1243,7 @@ def build_day3(background: Path):
     add_table(s, ["Area", "Wajib", "Bukti"], [
         ["Native", "foto benar + lifecycle", "device matrix"],
         ["Tests", "unit/state/widget", "green output"],
-        ["Contract", "OpenAPI parity", "schema/status evidence"],
+        ["API client", "schema/status mapping", "test evidence"],
         ["Performance", "1 experiment", "before/after"],
         ["Release", "signed APK/AAB", "cert + paths"],
         ["Smoke", "core flows release", "pass/fail record"],
