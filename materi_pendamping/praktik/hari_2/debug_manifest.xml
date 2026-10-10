@@ -1,0 +1,7 @@
+<!-- Merge with your existing android/app/src/debug/AndroidManifest.xml.
+     Never overwrite existing debug tooling entries without reviewing them.
+     HTTP is for local mock lab only. Release uses HTTPS staging. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application android:usesCleartextTraffic="true" />
+</manifest>

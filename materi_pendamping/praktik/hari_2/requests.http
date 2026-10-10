@@ -1,0 +1,34 @@
+### Health
+GET http://127.0.0.1:8000/health
+
+### Login dummy
+POST http://127.0.0.1:8000/auth/login
+Content-Type: application/json
+
+{"username":"trainer","password":"training123"}
+
+### List
+GET http://127.0.0.1:8000/inspections?per_page=50
+Authorization: Bearer training-demo-token
+
+### Create valid
+POST http://127.0.0.1:8000/inspections
+Authorization: Bearer training-demo-token
+Content-Type: application/json
+
+{"assetCode":"PMP-099","location":"Workshop B","condition":"needs_action","note":"Motor bergetar tinggi"}
+
+### Validation error 422
+POST http://127.0.0.1:8000/inspections
+Authorization: Bearer training-demo-token
+Content-Type: application/json
+
+{"assetCode":" ","location":"Workshop B","condition":"good","note":""}
+
+### Session expired simulation
+GET http://127.0.0.1:8000/inspections
+Authorization: Bearer invalid-token
+
+### Pagination demo
+GET http://127.0.0.1:8000/inspections?page=2&per_page=2
+Authorization: Bearer training-demo-token

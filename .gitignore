@@ -1,0 +1,36 @@
+# Workspace and editor files
+.DS_Store
+*.swp
+*.tmp
+**/__pycache__/
+**/*.pyc
+
+# Flutter/Dart generated output (all training projects)
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+**/build/
+**/coverage/
+
+# Native generated/local configuration
+**/android/.gradle/
+**/android/local.properties
+**/ios/Flutter/ephemeral/
+**/ios/Pods/
+**/DerivedData/
+
+# Secrets and signing material
+**/.env
+**/.env.*
+!**/.env.example
+**/key.properties
+**/*.jks
+**/*.keystore
+**/*.p12
+**/*.mobileprovision
+
+# Generated presentation previews
+**/preview/
+**/rendered/
+

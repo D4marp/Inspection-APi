@@ -1,0 +1,34 @@
+EXAMPLE FOR android/app/build.gradle.kts ONLY
+Use as individual insertions, never replace the full generated Gradle file.
+
+1. Imports at the top:
+import java.util.Properties
+import java.io.FileInputStream
+
+2. After plugins { ... }, before android { ... }:
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    FileInputStream(keystorePropertiesFile).use { keystoreProperties.load(it) }
+}
+
+3. Inside android { ... }, before buildTypes:
+signingConfigs {
+    create("release") {
+        keyAlias = keystoreProperties.getProperty("keyAlias")
+        keyPassword = keystoreProperties.getProperty("keyPassword")
+        storeFile = file(keystoreProperties.getProperty("storeFile"))
+        storePassword = keystoreProperties.getProperty("storePassword")
+    }
+}
+
+4. In the existing buildTypes release block, replace debug signing assignment:
+buildTypes {
+    release {
+        signingConfig = signingConfigs.getByName("release")
+    }
+}
+
+Do not duplicate an existing release block/config. Groovy projects need Groovy syntax.
+Use training keystore; exclude android/key.properties and *.jks from Git.
+Never alter the signing key of an already-distributed operational application.
