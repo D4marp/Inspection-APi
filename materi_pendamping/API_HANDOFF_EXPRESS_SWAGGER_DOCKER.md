@@ -4,6 +4,19 @@ Dokumen ini adalah checklist persiapan trainer/PIC sebelum kelas, bukan materi
 peserta. Kelas tetap dominan Flutter; Express, Swagger/OpenAPI, dan Docker hanya
 menjamin API training siap dipakai dan kontraknya mengikuti PRD Hari 2.
 
+Implementasi referensi yang siap dijalankan tersedia di
+`../backend/inspection-api`. Dari root paket:
+
+```sh
+cd backend/inspection-api
+docker compose up --build -d
+curl http://localhost:3100/health
+```
+
+Swagger UI lokal tersedia di <http://localhost:3100/docs> dan spesifikasi
+OpenAPI di <http://localhost:3100/openapi.json>. Port host `3100` dipilih agar
+tidak bentrok dengan development server pada port `3000`.
+
 ## Artefak yang disediakan backend
 
 - Base URL training melalui HTTPS.

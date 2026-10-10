@@ -65,8 +65,17 @@ fvm flutter run -d "iPhone 16" \
 ```
 
 Trainer memverifikasi `/health`, login, GET, POST, 401, dan 422 sebelum sesi.
-Checklist prasyarat backend berada di
+API Express + Swagger + Docker yang siap uji berada di
+`../backend/inspection-api`; checklist prasyarat backend berada di
 `API_HANDOFF_EXPRESS_SWAGGER_DOCKER.md`.
+
+```sh
+cd ../backend/inspection-api
+docker compose up --build -d
+curl http://localhost:3100/health
+```
+
+Swagger UI lokal: <http://localhost:3100/docs>.
 
 Jika hosting atau jaringan kelas bermasalah, gunakan mock lokal yang mempunyai
 kontrak sama:
