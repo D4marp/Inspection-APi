@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../gen/assets.gen.dart';
 import '../models/inspection.dart';
 import '../widgets/status_badge.dart';
 
@@ -16,6 +17,16 @@ class InspectionDetailScreen extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Assets.images.pumpInspection.image(
+                height: 220,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                semanticLabel: 'Ilustrasi inspeksi pompa',
+              ),
+            ),
+            const SizedBox(height: 24),
             Text(
               item.assetCode,
               style: Theme.of(context).textTheme.headlineMedium,

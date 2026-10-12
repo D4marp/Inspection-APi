@@ -28,6 +28,24 @@ flutter test
 flutter run -d "iPhone 16"
 ```
 
+## Asset gambar dengan FlutterGen
+
+Gambar lokal disimpan di `assets/images/` dan diakses melalui class yang
+dibuat FlutterGen, bukan dengan string path:
+
+```dart
+Assets.images.pumpInspection.image(fit: BoxFit.cover)
+```
+
+Setelah menambah atau mengganti asset, jalankan generator:
+
+```sh
+fvm flutter pub get
+fvm dart run build_runner build
+```
+
+Tanpa FVM, ganti `fvm flutter` dan `fvm dart` dengan `flutter` dan `dart`.
+
 ## Repository GitHub mandiri
 
 Folder ini tidak menyimpan credential. File generated, lockfile, Android, dan
