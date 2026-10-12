@@ -1,83 +1,90 @@
-# PRD Hari 3 Flutter dan Release Android
-**Product Requirements Document | DPL Inspection Training | Versi latihan 0.3**
+# PRD Hari 3 — Flutter WebView dan Migrasi Aplikasi Kotlin
 
-**Trainer dan Pembuat Buku: Damar Galih Aji Pradana, S.Tr.Kom.**
+**Trainer dan Pembuat Buku:** Damar Galih Aji Pradana, S.Tr.Kom.
 
-## Tujuan dan perubahan fokus
-Menyempurnakan aplikasi Flutter dengan fitur foto, pengujian, pemeriksaan performance, dan build iOS Simulator. Praktik utama memakai iPhone 16 Simulator; kamera diterima pada perangkat fisik. Source Android tetap tersedia untuk build APK/AAB lanjutan.
+## Problem
 
-Foto dipasang pada detail inspeksi sebagai preview lokal. Foto tidak di-upload ke API dan tidak dijamin bertahan setelah restart. Latihan memakai data dummy dan identitas app latihan, bukan rilis aplikasi operasional DPL.
+Tim memiliki aplikasi Android Kotlin yang perlu dimigrasikan bertahap ke Flutter.
+Risiko terbesar bukan syntax, melainkan perilaku yang hilang, contract berubah,
+WebView terlalu permisif, dan output AI agent yang tidak dapat ditelusuri.
 
-**Pengguna:** petugas inspeksi simulasi. **Reviewer:** trainer dan PIC developer. **Pemilik akun/key:** PIC yang ditunjuk. **Input:** checkpoint day-2 dengan API, session dan cache yang berfungsi.
+## Goal
 
-## Kebutuhan fungsional dan kualitas
-| ID | Persyaratan wajib | Hasil yang dapat diperiksa |
-|---|---|---|
-| D3-01 | Foto Android | Pilih galeri/kamera; preview pada detail record aktif |
-| D3-02 | Lifecycle picker | Cancel/error tidak crash; jalur retrieveLostData ditangani |
-| D3-03 | Flutter tests | Unit test model/validator dan widget test form/state |
-| D3-04 | Performance review | Satu pengukuran profile; satu perbaikan yang dijelaskan |
-| D3-05 | Polishing Flutter | UI sempit, keyboard, empty/error/retry, submit guard dan cache label |
-| D3-06 | Android release | ID latihan, versi, signing latihan, APK dan AAB |
-| D3-07 | Release smoke test | Login, list, create, cache, logout dan foto di device |
-| D3-08 | Handover | Source, README, hasil test, log build dan release checklist |
+Peserta menyelesaikan satu vertical slice daftar → detail, menulis traceability
+PRD, membangun WebView terbatasi, menggunakan Agent Skill yang repeatable, dan
+menyerahkan hasil analyze/test/build beserta daftar gap.
 
-**Bersyarat:** upload ke Google Play Internal Testing jika akun serta hak akses siap. **Overview:** Flutter memakai kode Dart bersama, tetapi iOS membutuhkan Mac/Xcode dan konfigurasi native/signing tersendiri. Tidak ada target archive, IPA, TestFlight, atau App Store pada kelas ini.
+## Persona dan outcome
 
-## User stories
-- Petugas ingin preview foto pada inspeksi yang tepat, termasuk saat membatalkan picker.
-- Developer ingin membuktikan bahwa validation dan state UI bekerja melalui test.
-- Developer ingin menemukan masalah UI/rebuild melalui DevTools dan memperbaikinya.
-- PIC ingin mendapatkan build Android dengan versi, environment dan signer yang diketahui.
+- **Petugas:** alur daftar/detail tetap dapat digunakan dan failure state jelas.
+- **Developer:** mapping Kotlin → Flutter dapat direview per slice.
+- **Reviewer/PIC:** setiap acceptance criterion mempunyai evidence dan owner.
 
-<!-- PAGE -->
-## Aturan foto dan Flutter
-- Gunakan image_picker dengan XFile; tombol pick dinonaktifkan selama proses.
-- Lampiran hanya terikat pada record aktif. Simpan id record ketika memulai picker agar pemulihan lost data tidak menempel pada record yang salah.
-- Kamera dapat memerlukan physical device. Batal picker menghasilkan null; jangan menganggapnya sebagai exception.
-- Setelah async selesai, periksa mounted sebelum menyentuh UI; controller mempunyai lifecycle jelas.
-- File sementara tidak digunakan sebagai bukti inspeksi permanen. Penyimpanan permanen, compression policy dan multipart upload menjadi pengayaan.
+## Source of truth
 
-## Identitas dan artefak Android
-| Komponen | Contoh latihan | Bukti |
-|---|---|---|
-| Application ID | com.example.dplinspection.training | Ganti menjadi ID milik akun bila upload |
-| Version | 0.3.0+3 | Version name dan version code |
-| API environment | Staging HTTPS | Host dan label environment; data dummy |
-| APK release | app-release.apk | Terpasang di device; fingerprint signer |
-| AAB release | app.aab | Build sukses; verifikasi signature |
-| Source | Tag day-3 | Commit hash, pubspec.lock dan README |
+Urutan otoritas adalah contract bisnis/API yang disetujui, perilaku legacy yang
+teramati, PRD slice, test/evidence, lalu implementasi. Nama class, screenshot,
+atau saran agent tidak boleh sendiri dianggap sebagai contract.
 
-## Pengujian minimum
-Unit test membuktikan parsing JSON serta aturan catatan untuk needs_action. Widget test membuktikan field wajib ditolak dan pesan error/retry dapat muncul. Smoke test dijalankan pada release Android terhadap API staging HTTPS yang disiapkan PIC. Mock HTTP hanya untuk debug lab; jangan membuka cleartext secara global pada release agar smoke test tampak berhasil.
+## Requirements migrasi
 
-**Performance:** ukur dalam mode profile pada device yang sama. Catat skenario scroll/rebuild, gejala awal, perbaikan, dan hasil setelahnya. Target kelas adalah menemukan serta menjelaskan satu perbaikan; tidak menetapkan angka FPS universal tanpa kondisi pengukuran.
+| ID | Kebutuhan |
+|---|---|
+| D3-01 | Inventory Activity/Fragment, XML, ViewModel, Retrofit, storage, navigation |
+| D3-02 | Behavior map mencatat input, output, state, error, side effect, dan unknown |
+| D3-03 | Slice mempunyai goal, out-of-scope, AC, evidence, dan owner |
+| D3-04 | Activity/Fragment dipetakan ke route/screen Flutter |
+| D3-05 | XML dipetakan ke widget tree yang responsive |
+| D3-06 | ViewModel/LiveData dipetakan ke state/controller dengan lifecycle jelas |
+| D3-07 | Retrofit/data layer dipetakan tanpa mengubah endpoint/payload |
+| D3-08 | Format, analyze, tests, dan smoke test dicatat |
 
-## Prasyarat
-Flutter 3.44.8, Xcode 26.5, iPhone 16 Simulator iOS 18.0, serta API training/staging HTTPS tersedia dan sudah diverifikasi trainer/PIC. Peserta menerima base URL dan kontrak response; implementasi/deployment backend bukan bagian sesi. Mock Python tetap menjadi fallback debug dengan kontrak sama. Signing store bersifat opsional. Jika staging belum tersedia, catat smoke test API release sebagai blocker; build simulator dan fungsi non-network tetap dapat diperiksa.
+## Requirements WebView
 
-<!-- PAGE -->
-## Acceptance criteria hari 3
-| ID | Skenario | Kriteria lulus |
-|---|---|---|
-| AC1 | Foto dan detail record lain | Preview hanya milik record yang dipilih |
-| AC2 | Cancel, denied/error dan lost data | App tetap berjalan; hasil dipulihkan atau pesan jelas |
-| AC3 | Unit/widget tests | Test aturan data dan interaksi UI lulus |
-| AC4 | Profile satu skenario | Bukti sebelum/sesudah; perbaikan dijelaskan |
-| AC5 | Layar sempit dan keyboard | Field/tombol terjangkau tanpa overflow |
-| AC6 | APK/AAB release | File tersedia dan signature latihan terverifikasi |
-| AC7 | Smoke test release | Alur utama bekerja; jika API staging tidak siap, blocker dicatat |
-| AC8 | Handover | Source, versi, host, hasil test dan catatan release lengkap |
+| ID | Kebutuhan |
+|---|---|
+| WV-01 | Controller dibuat terpisah dari `WebViewWidget` |
+| WV-02 | Loading, error, reload, dan back behavior terlihat |
+| WV-03 | Konten latihan memakai local asset |
+| WV-04 | JavaScript default mati |
+| WV-05 | Navigasi eksternal diblokir; remote origin kelak harus di-allowlist |
+| WV-06 | Tidak ada API key/token di HTML, JS, URL query, asset, atau log |
+| WV-07 | WebView bukan alasan untuk menghindari migrasi native Flutter tanpa keputusan produk |
+| WV-08 | Navigation policy dipisah sebagai pure function dan mempunyai unit test |
+
+## Agent Skill
+
+Skill proyek berada di:
+
+```text
+flutter_projects/hari_3_dpl_inspection_release/
+  .agents/skills/migrate-kotlin-slice/SKILL.md
+```
+
+Skill mengharuskan agent membaca PRD/source/test, menyebut unknown, membuat patch
+kecil, menjalankan quality gate, dan melaporkan gap. Agent dilarang mengarang
+contract, memperluas JavaScript/origin WebView, membocorkan secret, atau mengaku
+telah menjalankan test tanpa evidence.
+
+## Acceptance criteria
+
+| ID | Evidence lulus |
+|---|---|
+| AC1 | Behavior map legacy tersedia dan unknown tidak disamarkan |
+| AC2 | PRD slice daftar-detail mempunyai AC dan out-of-scope |
+| AC3 | Daftar/detail Flutter memakai ID yang sama dan navigation parity |
+| AC4 | Loading/empty/error/retry dapat dibedakan |
+| AC5 | WebView local asset berhasil dibuka |
+| AC6 | JavaScript mati dan external link ditolak |
+| AC7 | Skill valid dan path dapat ditemukan tool |
+| AC8 | Prompt/context bebas credential dan data sensitif |
+| AC9 | `flutter analyze` bersih dan seluruh test hijau |
+| AC10 | APK debug dapat dibangun untuk smoke test |
+| AC11 | Gap parity, risiko, owner, dan next slice dicatat |
 
 ## Definition of done
-Semua persyaratan inti dipenuhi dan acceptance diuji. APK dapat dipasang di device Android. AAB ditandatangani dengan key latihan. Trainer mencatat hasil network release sesuai kesiapan staging; blocker tidak dianggap sebagai test yang lulus. Upload Play dicatat terpisah dari kelulusan implementasi Flutter.
 
-## Paket handover peserta
-- Tag day-3 dan commit hash dengan README langkah menjalankan aplikasi.
-- Hasil flutter analyze, flutter test, dan log build Android.
-- Checklist smoke test, screenshot foto, dan catatan satu perbaikan performance.
-- Release notes berisi fitur, versi, host API, batas cache/foto, serta masalah yang diketahui.
-- Daftar blocker dengan PIC dan langkah berikutnya; key/password/token tidak disertakan.
-
-## Batas scope 3 hari
-Tidak mencakup offline write queue, backend production, upload foto ke server, GPS/notification, state management kedua, CI/CD, archive IPA, TestFlight, atau App Store. Penguasaan Flutter dibangun lewat alur yang selesai dan teruji, bukan menambahkan sebanyak mungkin package.
+PRD, behavior map, app Migration Lab, WebView boundary, Agent Skill, hasil
+analyze/test/build, dan handover gap tersedia. Rewrite seluruh aplikasi,
+JavaScript bridge produksi, perubahan backend, deployment store, dan fitur AI di
+runtime aplikasi berada di luar scope Hari 3.

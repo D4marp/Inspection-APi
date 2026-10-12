@@ -5,6 +5,12 @@ const errorResponses = {
       'application/json': { schema: { $ref: '#/components/schemas/Error' } },
     },
   },
+  404: {
+    description: 'Resource tidak ditemukan.',
+    content: {
+      'application/json': { schema: { $ref: '#/components/schemas/Error' } },
+    },
+  },
   500: {
     description: 'Kesalahan server atau fault simulation.',
     content: {
@@ -211,6 +217,67 @@ export function createOpenApiSpec({ baseUrl }) {
                 },
               },
             },
+          },
+        },
+        put: {
+          tags: ['Inspections'],
+          summary: 'Memperbarui inspeksi',
+          operationId: 'updateInspection',
+          security: [{ bearerAuth: [] }],
+          parameters: [
+            {
+              name: 'id',
+              in: 'path',
+              required: true,
+              schema: { type: 'string' },
+            },
+          ],
+          requestBody: {
+            required: true,
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/CreateInspection' },
+              },
+            },
+          },
+          responses: {
+            200: {
+              description: 'Inspeksi diperbarui.',
+              content: {
+                'application/json': {
+                  schema: { $ref: '#/components/schemas/Inspection' },
+                },
+              },
+            },
+            401: errorResponses[401],
+            404: errorResponses[404],
+            422: {
+              description: 'Body tidak memenuhi validasi.',
+              content: {
+                'application/json': {
+                  schema: { $ref: '#/components/schemas/ValidationError' },
+                },
+              },
+            },
+          },
+        },
+        delete: {
+          tags: ['Inspections'],
+          summary: 'Menghapus inspeksi',
+          operationId: 'deleteInspection',
+          security: [{ bearerAuth: [] }],
+          parameters: [
+            {
+              name: 'id',
+              in: 'path',
+              required: true,
+              schema: { type: 'string' },
+            },
+          ],
+          responses: {
+            204: { description: 'Inspeksi dihapus.' },
+            401: errorResponses[401],
+            404: errorResponses[404],
           },
         },
       },

@@ -1,94 +1,94 @@
-# PRD Hari 2 API dan Penyimpanan
-**Product Requirements Document | DPL Inspection Training | Versi latihan 0.2**
+# PRD Hari 2 — Flutter CRUD dengan JSONPlaceholder
 
-**Trainer dan Pembuat Buku: Damar Galih Aji Pradana, S.Tr.Kom.**
+**Trainer dan Pembuat Buku:** Damar Galih Aji Pradana, S.Tr.Kom.
 
 ## Tujuan
-Mengganti sumber data lokal checkpoint hari 1 dengan API latihan, menambahkan login demo, dan membuat state serta session dapat dikelola dengan jelas. UI tidak memanggil HTTP langsung. Peserta memisahkan model, API service, repository, controller ChangeNotifier, dan storage.
 
-**Input:** tag day-1 yang memenuhi PRD hari 1 serta API training yang sudah disiapkan trainer/PIC. **Output:** app terintegrasi API dengan token demo dan cache daftar terakhir. **Pengguna:** satu petugas simulasi. **Reviewer:** trainer dan PIC developer. Implementasi dan deployment backend bukan materi peserta; mock Python dalam folder praktik menjadi fallback kelas dengan kontrak sama.
+Peserta mengembangkan checkpoint Hari 1 menjadi aplikasi Flutter yang mempunyai
+page shell/form yang rapi, terhubung ke API publik open-source JSONPlaceholder,
+dapat memilih gambar/file, serta memakai OpenCode tanpa membocorkan API key.
 
-## Kebutuhan fungsional
-| ID | Persyaratan inti | Perilaku |
-|---|---|---|
-| D2-01 | Login | Kredensial demo valid mendapat token; salah mendapat pesan |
-| D2-02 | Session | Token disimpan di secure storage; startup memvalidasi melalui request API |
-| D2-03 | GET daftar | HTTP response dikonversi menjadi List Inspection |
-| D2-04 | POST inspeksi | Data valid dikirim; daftar diperbarui hanya setelah server sukses |
-| D2-05 | State | Loading, success, empty, error dan retry terlihat |
-| D2-06 | Cache | Simpan daftar terakhir; saat network failure tampil read-only dengan label waktu cache |
-| D2-07 | 401 dan logout | Token/cache dibersihkan; kembali ke login; data lama tidak tampil |
-| D2-08 | Submit guard | Tombol tidak menerima submit ganda selama request |
-| D2-09 | Search/filter | Search kode/lokasi dan filter kondisi di daftar yang sudah dimuat |
+## API utama
 
-**Demo tambahan:** pagination server, PUT/DELETE, interceptor konseptual dan upload multipart. Implementasi pagination penuh bukan acceptance wajib. Cache hanya daftar; tidak ada antrean POST offline.
-
-## User stories
-- Petugas ingin login dan melanjutkan sesi setelah restart tanpa menyimpan password.
-- Petugas ingin melihat hasil request atau error sehingga mengetahui kapan retry perlu dilakukan.
-- Petugas ingin membaca data terakhir ketika koneksi putus dan mengetahui bahwa data tersebut berasal dari cache.
-- Petugas ingin logout tanpa meninggalkan session maupun catatan pengguna sebelumnya.
-
-<!-- PAGE -->
-## Kontrak API latihan
-**Base URL:** parameter API_BASE_URL, tanpa slash terakhir. Jalur utama device/simulator memakai URL HTTPS yang disediakan PIC. Fallback mock lokal: iPhone Simulator memakai `http://localhost:8000`; Android Emulator memakai `http://10.0.2.2:8000`; physical device memakai alamat LAN komputer server. HTTP hanya untuk debug lab; release memakai staging HTTPS. Trainer memverifikasi kontrak sebelum sesi sehingga peserta langsung mengerjakan Flutter.
-
-| Endpoint | Request | Response inti |
-|---|---|---|
-| POST /auth/login | username dan password | 200 token dan user; 401 bila salah |
-| GET /inspections | Bearer token; query page/per_page/q/condition opsional | 200 items, page, per_page, total |
-| POST /inspections | Bearer token; assetCode, location, condition, note | 201 object Inspection |
-| GET /health | Tanpa token | 200 status ok |
-
-Dokumentasi kontrak API dapat disediakan melalui Swagger/OpenAPI untuk referensi
-trainer dan peserta, tetapi pembahasan tooling backend bukan bagian praktik.
-
-**Demo login:** username `trainer`, password `training123`. Seluruh kredensial dan token ini dummy, bukan contoh autentikasi production. Mock server menyimpan data dalam memori; restart server mengembalikan seed data.
-
-```json
-{"token":"training-demo-token","user":{"id":"u1","name":"Trainer"}}
+```text
+https://jsonplaceholder.typicode.com
 ```
 
-```json
-{"items":[{"id":"1","assetCode":"PMP-001",
-"location":"Workshop A","condition":"good","note":"",
-"createdAt":"2026-10-03T01:00:00Z"}],
-"page":1,"per_page":50,"total":1}
-```
+JSONPlaceholder tidak membutuhkan akun atau API key dan mendukung HTTP method
+GET, POST, PUT, PATCH, dan DELETE. Resource yang dipakai adalah `/posts`.
 
-**Error kontrak:** 400 malformed JSON/query; 401 session tidak valid; 409 konflik/idempotency bila digunakan; 422 field invalid; 429 rate limit bila digunakan; 500 fault simulasi. Error berbentuk `{"message":"..."}` dan boleh membawa detail field yang terdokumentasi. Timeout dan network error berasal dari client dan tidak mempunyai HTTP status.
+Write bersifat simulasi: response POST/PUT/DELETE dapat dipakai untuk latihan
+state UI, tetapi perubahan tidak disimpan permanen. Refresh mengembalikan data
+public API. Batas ini harus terlihat pada aplikasi dan dijelaskan oleh peserta.
 
-## Storage dan state
-Token memakai secure storage. Cache daftar nonrahasia memakai SharedPreferencesAsync sebagai latihan; simpan satu JSON berisi items dan fetchedAt UTC. Data inspeksi production dapat bersifat sensitif sehingga backend dan kebijakan storage nyata harus ditinjau sebelum operasional.
+## Output wajib
 
-Controller memiliki items, isLoading, isSubmitting, errorMessage, isCached dan fetchedAt. Loading tidak dimulai dari build(). Controller dimiliki dan di-dispose oleh layar. Repository menerima service melalui constructor agar sumber data bisa diganti.
+- UI dengan `Scaffold`, `AppBar`, `Row`, `Column`, `Form`, dan validation.
+- GET `/posts?_limit=20` dipetakan menjadi daftar inspection.
+- POST `/posts`, PUT `/posts/{id}`, dan DELETE `/posts/{id}` berjalan.
+- Mapper terpisah antara schema Post dan model domain Inspection.
+- Read, Create, Update, dan Delete berada dalam empat operation file terpisah.
+- Banner simulasi selalu terlihat pada tab CRUD.
+- Image preview dan file metadata dengan label belum di-upload.
+- OpenCode terpasang; API key tidak berada di Flutter.
+- Format, analyze, tests, dan APK debug lulus.
 
-<!-- PAGE -->
-## Acceptance criteria hari 2
-| ID | Skenario | Kriteria lulus |
-|---|---|---|
-| AC1 | Login benar dan salah | Benar membuka daftar; salah tetap di login tanpa token |
-| AC2 | Restart app setelah login | Token dibaca; API diminta ulang; 401 tetap mengakhiri session |
-| AC3 | GET dan POST valid | Response diparse; item baru tampil sekali dengan id server |
-| AC4 | Klik simpan berulang saat request lambat | Hanya satu POST berjalan |
-| AC5 | Network dimatikan sesudah GET sukses | Cache read-only tampil, label dan fetchedAt terlihat |
-| AC6 | Network dimatikan tanpa cache | Error informatif dan retry, bukan daftar kosong palsu |
-| AC7 | Header token tidak valid | 401 menghapus token/cache lalu membuka login |
-| AC8 | Server 422 atau 500 | Pesan tampil; form tetap berisi data; submit dapat dicoba lagi |
-| AC9 | JSON cache rusak | Cache diabaikan/dihapus; aplikasi tidak crash |
-| AC10 | Logout dan login ulang | Session lama dibersihkan; tidak ada data cache lama |
-| AC11 | Search/filter lokal | Hasil sesuai kode/lokasi/kondisi; clear memulihkan daftar |
+## Contract latihan
 
-## Kebutuhan nonfungsional
-- Request timeout 10 detik; exception dibedakan antara timeout, network, parsing dan HTTP failure.
-- Base URL bukan string hardcode di beberapa layar; gunakan dart-define.
-- Password, token dan authorization header tidak dicetak ke log.
-- pubspec.lock, README run server/app, dan file contoh environment masuk version control; credential asli tidak masuk.
-- UI tidak melakukan retry POST otomatis karena request pertama mungkin telah diterima server.
-- Cache tidak dipakai setelah 401 dan tidak memungkinkan membuat data offline.
+| Intent | Method | Path | Status | Persistence |
+|---|---|---|---:|---|
+| Read | GET | `/posts?_limit=20` | 200 | data publik |
+| Create | POST | `/posts` | 201 | simulasi |
+| Update | PUT | `/posts/{id}` | 200 | simulasi |
+| Delete | DELETE | `/posts/{id}` | 200 | simulasi |
+
+## Mapping schema
+
+| JSONPlaceholder | Inspection |
+|---|---|
+| `id` | `id` dan kode fallback `POST-001` |
+| `userId` | lokasi fallback `User 1` |
+| `body` | catatan fallback |
+| `title` | field standar saat write |
+| field tambahan `assetCode/location/condition/note` | nilai domain simulated response |
+
+Mapping berada di `json_placeholder_mapper.dart`, bukan di widget atau model.
+
+## Functional requirements
+
+| ID | Kebutuhan |
+|---|---|
+| D2-01 | Aplikasi langsung membuka Home tanpa login palsu |
+| D2-02 | GET menampilkan loading, data/empty, error, retry, dan cache |
+| D2-03 | POST valid menambah simulated response ke state lokal |
+| D2-04 | PUT mengganti item berdasarkan ID |
+| D2-05 | DELETE meminta konfirmasi dan menghapus item lokal setelah status 200 |
+| D2-06 | Refresh/reset mengembalikan daftar public API |
+| D2-07 | UI menjelaskan bahwa write tidak persisten |
+| D2-08 | Network/timeout/invalid JSON dipetakan ke pesan yang dapat ditindaklanjuti |
+| D2-09 | Image/file picker menangani sukses dan cancel tanpa crash |
+| D2-10 | API key AI tidak masuk source, asset, build, log, atau screenshot |
+
+## Acceptance criteria
+
+| ID | Evidence lulus |
+|---|---|
+| AC1 | GET public API menghasilkan daftar inspection |
+| AC2 | Unit test membuktikan Post → Inspection mapping |
+| AC3 | Create memberi ID 101 dan item tampil lokal |
+| AC4 | Update memakai `/posts/{id}` dan response mengganti item |
+| AC5 | Delete dapat dibatalkan; status 200 menghapus item lokal |
+| AC6 | Reset membuktikan perubahan write tidak persisten |
+| AC7 | Banner simulasi terlihat sebelum peserta menjalankan write |
+| AC8 | Empat operasi CRUD berada pada empat file; `ApiClient` hanya menjadi facade |
+| AC9 | Picker tidak dikirim ke JSONPlaceholder |
+| AC10 | `flutter analyze` bersih dan seluruh test hijau |
+| AC11 | APK debug berhasil dibangun |
+| AC12 | Git diff bebas API key/token/credential nyata |
 
 ## Definition of done
-Semua persyaratan inti dan acceptance criteria lulus. Serahkan checkpoint day-2, bukti GET/POST, screenshot error/cache, dan catatan skema JSON. Trainer memeriksa pemisahan layer serta logout. Build release dan foto belum menjadi syarat hari 2.
 
-## Dependensi dan pengendalian risiko
-API training menjadi jalur utama setelah trainer/PIC menyelesaikan dry run endpoint, credential dummy, dan fault scenario. Peserta cukup menerima base URL serta kontrak response. Mock Python tetap tersedia sebagai fallback. Implementasi/deployment backend, refresh token, role permissions, database offline, serta multi-user cache tidak menjadi scope kelas.
+Empat method CRUD dapat didemokan, batas simulasi dapat dijelaskan, tutorial
+pembuatan per file tersedia, picker mempunyai scope yang benar, dan quality gate
+lulus. Persistence nyata, auth, upload multipart, database, dan backend
+production berada di luar scope inti Hari 2.

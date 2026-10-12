@@ -2,6 +2,7 @@
   "name": "dpl-inspection-training-api",
   "version": "1.0.0",
   "private": true,
+  "license": "MIT",
   "description": "Express API untuk uji coba aplikasi Flutter DPL Inspection.",
   "type": "module",
   "engines": {

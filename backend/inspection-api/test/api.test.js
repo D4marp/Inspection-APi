@@ -102,6 +102,24 @@ describe('DPL Inspection Training API', () => {
     assert.equal(detail.body.assetCode, 'PMP-099');
   });
 
+  it('updates and deletes a record', async () => {
+    const app = buildApp();
+    const updated = await request(app)
+      .put('/inspections/1')
+      .set(auth)
+      .send({
+        assetCode: 'PMP-001-REV',
+        location: 'Workshop C',
+        condition: 'needs_action',
+        note: 'Seal pompa perlu dijadwalkan ulang',
+      })
+      .expect(200);
+    assert.equal(updated.body.assetCode, 'PMP-001-REV');
+
+    await request(app).delete('/inspections/1').set(auth).expect(204);
+    await request(app).get('/inspections/1').set(auth).expect(404);
+  });
+
   it('replays the same idempotent request and rejects a changed payload', async () => {
     const app = buildApp();
     const input = {
@@ -156,6 +174,8 @@ describe('DPL Inspection Training API', () => {
     assert.ok(response.body.paths['/inspections'].get);
     assert.ok(response.body.paths['/inspections'].post);
     assert.ok(response.body.paths['/inspections/{id}'].get);
+    assert.ok(response.body.paths['/inspections/{id}'].put);
+    assert.ok(response.body.paths['/inspections/{id}'].delete);
   });
 
   it('returns structured 400 and 404 responses', async () => {

@@ -1,5 +1,5 @@
 name: dpl_inspection_day_3
-description: "Praktik Hari 3 Flutter: photo picker, testing, performance, dan release."
+description: "Praktik Hari 3 Flutter: WebView, Agent Skill, dan migrasi aplikasi Kotlin berbasis PRD."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   image_picker: ^1.2.4
   shared_preferences: ^2.5.6
+  webview_flutter: ^4.14.1
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +59,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - assets/migration_guide.html
 
   # To add assets to your application, add an assets section, like this:
   # assets:

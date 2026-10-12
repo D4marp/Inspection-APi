@@ -52,5 +52,28 @@ export function createInspectionRouter({ config, store }) {
     }
   });
 
+  router.put('/:id', async (req, res, next) => {
+    try {
+      await applyTrainingDelay(req, config);
+      const parsed = normalizeCreateInspection(req.body);
+      if (Object.keys(parsed.errors).length > 0) {
+        throw validationFailed(parsed.errors);
+      }
+      res.json(store.update(req.params.id, parsed.value));
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  router.delete('/:id', async (req, res, next) => {
+    try {
+      await applyTrainingDelay(req, config);
+      store.delete(req.params.id);
+      res.status(204).send();
+    } catch (error) {
+      next(error);
+    }
+  });
+
   return router;
 }

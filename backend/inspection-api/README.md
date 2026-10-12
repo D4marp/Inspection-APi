@@ -11,7 +11,7 @@ token, dan record adalah data dummy training.
 - Health: <http://localhost:3100/health>
 - Login: `POST /auth/login`
 - List/create: `GET|POST /inspections`
-- Detail: `GET /inspections/{id}`
+- Detail/update/delete: `GET|PUT|DELETE /inspections/{id}`
 
 Login default: `trainer` / `training123`.
 
@@ -93,7 +93,11 @@ docker compose config
 docker build -t dpl-inspection-training-api:local .
 ```
 
-API mempunyai request ID, log JSON tanpa Authorization/body, validasi field,
-error response konsisten, pagination/search/filter, dan `Idempotency-Key` untuk
-mendemonstrasikan retry POST yang aman. Ini tetap API training, bukan backend
-production atau tempat menyimpan data operasional.
+Source API terbuka di repository training sehingga peserta dapat membaca route,
+store, validation, OpenAPI, dan test. API mempunyai CRUD lengkap, request ID,
+log JSON tanpa Authorization/body, validasi field, error response konsisten,
+pagination/search/filter, dan `Idempotency-Key` untuk mendemonstrasikan retry
+POST yang aman. Ini tetap API training, bukan backend production atau tempat
+menyimpan data operasional.
+
+Source backend dilisensikan dengan MIT License; lihat `LICENSE`.

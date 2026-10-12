@@ -27,8 +27,8 @@ fvm flutter --version
 | Hari | Folder | Hasil utama |
 |---|---|---|
 | 1 | `../flutter_projects/hari_1_dpl_inspection` | UI, form, navigation, state lokal |
-| 2 | `../flutter_projects/hari_2_dpl_inspection_api` | Login, REST API, token, cache, POST |
-| 3 | `../flutter_projects/hari_3_dpl_inspection_release` | Foto, izin iOS, test, build |
+| 2 | `../flutter_projects/hari_2_dpl_inspection_api` | UI foundation, full CRUD, image/file picker, OpenCode setup |
+| 3 | `../flutter_projects/hari_3_dpl_inspection_release` | PRD migrasi Kotlin, WebView, Agent Skill, quality gate |
 
 Semua folder adalah proyek mandiri hasil
 `flutter create --platforms=android,ios`. Masing-masing memiliki README, test,
@@ -50,67 +50,37 @@ error/retry, theme, komponen reusable, dan widget test.
 
 ![Aplikasi Hari 1 pada iPhone 16](../flutter_projects/hari_1_dpl_inspection/screenshots/hari_1_daftar.png)
 
-## Hari 2 — API, state dan storage
+## Hari 2 — UI, full CRUD, picker, dan OpenCode
 
-Jalur utama kelas memakai API HTTPS yang sudah disiapkan PIC. Implementasi dan
-deployment backend bukan materi kelas; peserta berfokus pada API client, model,
-repository, state, session, cache, dan error handling di Flutter. Ganti
-placeholder di bawah dengan URL training:
-
-```sh
-cd flutter_projects/hari_2_dpl_inspection_api
-fvm flutter pub get
-fvm flutter run -d "iPhone 16" \
-  --dart-define=API_BASE_URL=https://HOST_API_TRAINING
-```
-
-Trainer memverifikasi `/health`, login, GET, POST, 401, dan 422 sebelum sesi.
-API Express + Swagger + Docker yang siap uji berada di
-`../backend/inspection-api`; checklist prasyarat backend berada di
-`API_HANDOFF_EXPRESS_SWAGGER_DOCKER.md`.
-
-```sh
-cd ../backend/inspection-api
-docker compose up --build -d
-curl http://localhost:3100/health
-```
-
-Swagger UI lokal: <http://localhost:3100/docs>.
-
-Jika hosting atau jaringan kelas bermasalah, gunakan mock lokal yang mempunyai
-kontrak sama:
-
-Jalankan mock API dari root paket:
-
-```sh
-python3 materi_pendamping/praktik/mock_api/mock_api.py --host 127.0.0.1 --port 8000
-```
-
-Terminal kedua:
+Proyek mempunyai tiga tab: CRUD API, UI Dasar, dan AI Setup. Jalur utama memakai
+JSONPlaceholder public API; peserta mengerjakan GET, POST, PUT, DELETE, mapper,
+failure state, picker, serta setup OpenCode tanpa API key di Flutter.
 
 ```sh
 cd flutter_projects/hari_2_dpl_inspection_api
 fvm flutter pub get
-fvm flutter run -d "iPhone 16" \
-  --dart-define=API_BASE_URL=http://localhost:8000
+fvm flutter run -d "iPhone 16"
 ```
 
-Login dummy: `trainer` / `training123`. Proyek sudah lengkap dengan UI login,
-list/detail/form, ApiClient, repository, ChangeNotifier, secure token, cache,
-session expiry, retry, logout, dan POST. Token statis hanya untuk kelas.
+Trainer memverifikasi GET, POST, PUT, dan DELETE terhadap
+`https://jsonplaceholder.typicode.com/posts`. Write hanya simulasi dan tidak
+persisten; banner aplikasi serta materi menjelaskan batas ini.
+
+```sh
+curl 'https://jsonplaceholder.typicode.com/posts?_limit=2'
+```
+
+Tutorial pembuatan per file berada di
+`../flutter_projects/hari_2_dpl_inspection_api/docs/JSONPLACEHOLDER_PER_FILE.md`.
+Jika internet kelas gagal, gunakan response fixture melalui `MockClient`; mock
+lama `/inspections` tidak kompatibel dengan adapter `/posts` yang baru.
+
+Tidak ada login/API key untuk JSONPlaceholder. File yang dipilih pada form hanya
+preview/metadata lokal dan belum di-upload.
 
 ![Aplikasi Hari 2 mengambil data API](../flutter_projects/hari_2_dpl_inspection_api/screenshots/hari_2_api.png)
 
-Fault simulation tetap tersedia:
-
-```sh
-python3 materi_pendamping/praktik/mock_api/mock_api.py --fail-list
-python3 materi_pendamping/praktik/mock_api/mock_api.py --fail-create
-python3 materi_pendamping/praktik/mock_api/mock_api.py --delay 11
-python3 materi_pendamping/praktik/mock_api/mock_api.py --empty
-```
-
-## Hari 3 — foto, testing dan build
+## Hari 3 — Flutter WebView dan migrasi Kotlin berbasis PRD
 
 ```sh
 cd flutter_projects/hari_3_dpl_inspection_release
@@ -120,9 +90,11 @@ fvm flutter test
 fvm flutter run -d "iPhone 16"
 ```
 
-`PhotoPanel` menangani pilihan Galeri/Kamera, cancel, error, dan lost-data
-recovery. Kamera simulator dapat tidak tersedia; gunakan Galeri untuk latihan
-dan perangkat fisik untuk acceptance kamera.
+App Migration Lab mempunyai tab PRD, WebView, target Flutter, dan Agent Skill.
+WebView membuka asset lokal dengan JavaScript mati dan external navigation
+diblokir. Skill proyek berada di
+`.agents/skills/migrate-kotlin-slice/SKILL.md`; foto lokal tetap tersedia pada
+target detail sebagai contoh native plugin/lifecycle.
 
 ![Aplikasi Hari 3 dengan panel foto](../flutter_projects/hari_3_dpl_inspection_release/screenshots/hari_3_foto.png)
 

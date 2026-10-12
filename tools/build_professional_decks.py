@@ -339,7 +339,8 @@ def add_card(
 
 def add_code(slide, code: str, x, y, w, h, *, label="DART", highlight=None, size=11):
     add_box(slide, x, y, w, h, CODE, NAVY_2)
-    add_pill(slide, label, x + Inches(0.18), y + Inches(0.16), Inches(0.86), fill=NAVY_2, color=CYAN_2, size=8)
+    label_width = min(2.7, max(0.86, 0.4 + (len(label) * 0.07)))
+    add_pill(slide, label, x + Inches(0.18), y + Inches(0.16), Inches(label_width), fill=NAVY_2, color=CYAN_2, size=8)
     add_text(
         slide,
         code,

@@ -7,8 +7,8 @@ Paket presentasi untuk PT. Dok Pantai Lamongan. Fokus pada pengembangan aplikasi
 | Presentasi | Slide | Hasil utama |
 |---|---:|---|
 | Hari_1_Dart_Flutter_UI_Form.pptx | 44 | Model Dart, daftar/detail, form valid, navigation dan state UI |
-| Hari_2_Architecture_API_State_Storage.pptx | 39 | Clean boundaries, API client, model, state, cache dan failure engineering |
-| Hari_3_Testing_Performance_Release_Android.pptx | 39 | Native boundary, test strategy, DevTools, signing, release dan handover |
+| Hari_2_Architecture_API_State_Storage.pptx | 39 | Scaffold/Form, JSONPlaceholder CRUD, mapper, picker, OpenCode |
+| Hari_3_Testing_Performance_Release_Android.pptx | 39 | PRD migrasi Kotlin, WebView security, Agent Skill, test/build evidence |
 
 Total 122 slide. Format 16:9; teks, kode, tabel dan diagram teknis dapat diedit. Deck Hari 2–3 memakai tema navy–cyan–gold yang konsisten dengan cover buku. Setiap slide memiliki catatan presenter berisi tujuan, alokasi waktu, arahan penjelasan/demonstrasi, pertanyaan diskusi dan rujukan. Kunci evaluasi berada pada catatan slide evaluasi.
 
@@ -25,28 +25,39 @@ Peserta diasumsikan memahami dasar pemrograman dan pengalaman pengembangan Andro
 | Hari | Urutan sesi |
 |---|---|
 | 1 | Dart → widget/layout → state/form/navigation → debugging → review |
-| 2 | Clean boundaries → API client/login/GET/POST → state/cache → failure engineering → review |
-| 3 | Native boundary → test portfolio → profiling → overview iOS 20 menit → release/review |
+| 2 | UI composition → 4 file CRUD + mapper → picker → OpenCode/API key → challenge |
+| 3 | Legacy inventory → PRD slice → Agent Skill → WebView modular → migration lab → handover |
 
 Jika peserta tertinggal, dahulukan kriteria wajib PRD. Asset dekoratif, pagination lengkap, custom MethodChannel, upload foto permanen dan sinkronisasi offline merupakan pengembangan lanjutan. Foto dalam latihan adalah preview lokal; cache bersifat read-only dengan timestamp.
 
 ## Persiapan demonstrasi
 
 1. Catat versi Flutter/Dart/JDK/Android SDK dan dependency yang benar-benar dipakai; simpan pubspec.lock untuk konsistensi.
-2. Sebelum kelas, trainer/PIC memverifikasi hosted API dan endpoint health dari device kelas. Peserta langsung berfokus pada integrasi Flutter. Jalankan mock Python hanya sebagai fallback dengan kontrak yang sama.
-3. Siapkan skenario login salah, 401, 409, 422, 500, timeout, cache rusak dan logout; gunakan request ID tanpa merekam token.
-4. Gunakan physical Android untuk profiling dan pemeriksaan kamera. Siapkan fallback demonstrasi jika hardware peserta berbeda.
-5. Siapkan keystore latihan dan staging HTTPS sebelum sesi rilis. Isi placeholder host/path/password di mesin latihan; gunakan identifier yang bebas dari aplikasi operasional.
-6. Lakukan dry-run contoh kode dan alur kelas pada toolchain peserta. Contoh pada slide adalah potongan terarah; imports, helper, field State, wiring UI dan konfigurasi lengkap mengikuti modul/source latihan.
+2. Sebelum Hari 2, verifikasi koneksi HTTPS dan empat method JSONPlaceholder; jelaskan bahwa write tidak persisten.
+3. Siapkan OpenCode 1 stable dan provider masing-masing peserta. Jangan tampilkan atau membagikan API key.
+4. Sebelum Hari 3, sanitasi source Kotlin/XML dan contract yang menjadi context pack.
+5. Smoke-test WebView asset lokal, external-navigation block, serta Agent Skill discovery.
+6. Lakukan dry-run challenge dan quality gate pada toolchain peserta.
+
+Saat membahas CRUD, buka hanya satu operation file dan satu test pada setiap
+checkpoint: Read, Create, Update, lalu Delete. `ApiClient` baru dibuka setelah
+empat operasi selesai untuk menunjukkan facade. Pada WebView, mulai dari pure
+navigation policy, lanjut controller, lalu screen.
 
 Perintah panjang pada beberapa slide ditampilkan dalam dua baris agar mudah dibaca. Gabungkan menjadi satu command saat menjalankannya, seperti dijelaskan pada catatan presenter.
 
 ## Praktik engineering yang dilatih
 
-Pemisahan tanggung jawab UI/controller/repository/service, model bertipe, dependency melalui constructor, penanganan error yang dapat diuji, lifecycle resource, token melalui secure storage, test perilaku, pengukuran performance, checkpoint Git serta verifikasi signer dan smoke test release. Materi ini menggunakan praktik engineering umum; tidak mengklaim sertifikasi atau kesesuaian terhadap satu standar formal tertentu.
+Pemisahan UI/controller/repository/service, full CRUD semantics, picker lifecycle,
+secret boundary, PRD traceability, migration per vertical slice, WebView allowlist,
+Agent Skill, test perilaku, checkpoint Git, build, dan handover.
 
 ## Pemeriksaan paket dan batas verifikasi
 
-Struktur PPTX, ukuran slide, font, tabel native dan catatan presenter diperiksa. Seluruh slide Hari 2–3 dirender ke PDF dan ditinjau melalui contact sheet. Source generator berada di `tools/build_professional_decks.py` agar perubahan berikutnya konsisten.
+Struktur PPTX, ukuran slide, font, tabel native dan catatan presenter diperiksa.
+Seluruh slide Hari 2–3 dirender ke PDF dan ditinjau melalui contact sheet. Source
+generator berada di `tools/build_day2_crud_ai_picker_deck.py` dan
+`tools/build_day3_ai_webview_deck.py`; keduanya memakai komponen visual dari
+`tools/build_professional_decks.py` agar perubahan berikutnya konsisten.
 
 Build, test dan smoke test yang disebut dalam materi tetap merupakan aktivitas kelas pada toolchain trainer/peserta. Paket presentasi belum diuji melalui Google Slides secara langsung. Periksa tampilan di komputer trainer sebelum kelas; font yang dipakai adalah Aptos/Aptos Display serta Cascadia Mono dengan fallback dari aplikasi presentasi.

@@ -4,12 +4,13 @@ import '../models/inspection.dart';
 import 'inspection_detail_screen.dart';
 
 class InspectionListScreen extends StatelessWidget {
-  const InspectionListScreen({super.key});
+  const InspectionListScreen({super.key, this.embedded = false});
+
+  final bool embedded;
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('DPL Inspection')),
-    body: SafeArea(
+  Widget build(BuildContext context) {
+    final content = SafeArea(
       child: ListView.separated(
         padding: const EdgeInsets.all(16),
         itemCount: demoInspections.length,
@@ -43,6 +44,11 @@ class InspectionListScreen extends StatelessWidget {
           );
         },
       ),
-    ),
-  );
+    );
+    if (embedded) return content;
+    return Scaffold(
+      appBar: AppBar(title: const Text('DPL Inspection')),
+      body: content,
+    );
+  }
 }

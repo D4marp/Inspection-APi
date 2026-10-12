@@ -33,6 +33,17 @@ Content-Type: application/json
 
 {"assetCode":"PMP-099","location":"Workshop B","condition":"needs_action","note":"Motor bergetar tinggi"}
 
+### Update
+PUT {{baseUrl}}/inspections/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"assetCode":"PMP-001-REV","location":"Workshop C","condition":"needs_action","note":"Seal pompa perlu dijadwalkan ulang"}
+
+### Delete
+DELETE {{baseUrl}}/inspections/3
+Authorization: Bearer {{token}}
+
 ### Validation error 422
 POST {{baseUrl}}/inspections
 Authorization: Bearer {{token}}

@@ -80,4 +80,22 @@ export class InspectionStore {
     }
     return { record: { ...record }, replayed: false };
   }
+
+  update(id, input) {
+    const index = this.records.findIndex((item) => item.id === id);
+    if (index < 0) throw notFound('Inspeksi tidak ditemukan.');
+    const record = {
+      ...this.records[index],
+      ...input,
+      id,
+    };
+    this.records[index] = record;
+    return { ...record };
+  }
+
+  delete(id) {
+    const index = this.records.findIndex((item) => item.id === id);
+    if (index < 0) throw notFound('Inspeksi tidak ditemukan.');
+    this.records.splice(index, 1);
+  }
 }
